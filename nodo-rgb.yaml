@@ -1,0 +1,79 @@
+esphome:
+ name: luces-led
+ friendly_name: luces_led
+
+esp8266:
+ board: d1_mini
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+ encryption:
+   key: "5LwW1VyhL6EV78GzlIsg2+wOCALrqOnyLVnwrO8OWn8="
+
+ota:
+ password: "251fef604798361b6a19d74a9ac7360a"
+
+wifi:
+ ssid: !secret wifi_ssid
+ password: !secret wifi_password
+
+ # Enable fallback hotspot (captive portal) in case wifi connection fails
+ ap:
+   ssid: "Luces-Led Fallback Hotspot"
+   password: "0iTFZMmcYYIH"
+
+captive_portal:
+ light:
+ - platform: rgb
+   name: "Living Luces Led"
+   red: output_component1
+   green: output_component2
+   blue: output_component3
+   effects:
+     # Use default parameters:
+     - random:
+     # Customize parameters
+     - random:
+         name: "aleatorio lento"
+         transition_length: 10s
+         update_interval: 10s
+     - random:
+         name: "aleatorio rápido"
+         transition_length: 2s
+         update_interval: 3s
+     - strobe:
+     - strobe:
+         name: Efecto estroboscópico
+         colors:
+           - state: True
+             brightness: 100%
+             red: 100%
+             green: 90%
+             blue: 0%
+             duration: 500ms
+           - state: False
+             duration: 250ms
+           - state: True
+             brightness: 100%
+             red: 0%
+             green: 100%
+             blue: 0%
+             duration: 500ms
+
+# Example output entry
+output:
+ - platform: esp8266_pwm
+   id: output_component2
+   pin: D5
+   frequency: 1000Hz
+ - platform: esp8266_pwm
+   id: output_component1
+   pin: D7
+   frequency: 1000Hz
+ - platform: esp8266_pwm
+   id: output_component3
+   pin: D6
+   frequency: 1000Hz
